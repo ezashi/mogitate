@@ -80,15 +80,15 @@
       <a href="{{ route('products') }}" class="btn btn-secondary">戻る</a>
       <!-- 更新ボタン -->
       <button type="submit" class="btn">変更を保存</button>
-      <!-- 削除フォーム -->
-      <form action="{{ route('products.destroy', $product->productId) }}" method="POST" style="display: inline;">
-        @csrf
-        @method('DELETE')
-        <!-- 削除ボタン（ゴミ箱アイコン付き） -->
-        <button type="submit" class="btn btn-danger">
-          <i class="fas fa-trash"></i> 削除
-        </button>
-      </form>
     </div>
+  </form>
+  <!-- 削除フォーム -->
+  <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
+    @csrf
+    @method('DELETE')
+    <!-- 削除ボタン（ゴミ箱アイコン付き） -->
+    <button type="submit" class="btn btn-danger">
+      <i class="fas fa-trash"></i> 削除
+    </button>
   </form>
 @endsection
