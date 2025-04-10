@@ -39,7 +39,7 @@
     <!-- 商品カード（クリックで詳細ページに遷移） -->
     <a href="{{ route('products.show', $product->id) }}" class="product-card">
       <!-- 商品画像（Storageからの表示） -->
-      <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="product-image">
+      <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="product-image">
       <div class="product-info">
         <h3 class="product-name">{{ $product->name }}</h3>
         <p class="product-price">¥{{ number_format($product->price) }}</p>

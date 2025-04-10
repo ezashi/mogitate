@@ -4,7 +4,7 @@
   <!-- 商品詳細 -->
   <div class="product-detail">
     <!-- 商品画像 -->
-    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="product-detail-image">
+    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="product-detail-image">
 
     <!-- 商品名 -->
     <div class="form-group">

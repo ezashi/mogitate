@@ -23,13 +23,27 @@ class ProductRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+         // 商品IDを取得（更新時のみ存在する）
+        $productId = $this->route('productId');
+
+        // 基本ルールを定義
+        $rules = [
             'name' => 'required',
             'price' => 'required|numeric|min:0|max:10000',
             'seasons' => 'required',
             'description' => 'required|max:120',
-            'image' => 'required|mimes:png,jpeg',
         ];
+
+        // 商品作成時は画像必須、更新時は画像がある場合のみバリデーション
+        if (!$productId) {
+            // 新規作成時
+            $rules['image'] = 'required|mimes:png,jpeg,jpg';
+        } else {
+            // 更新時（画像がある場合のみ）
+            $rules['image'] = 'nullable|mimes:png,jpeg,jpg';
+        }
+
+        return $rules;
     }
 
     public function messages()

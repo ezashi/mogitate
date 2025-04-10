@@ -64,7 +64,7 @@
       <!-- 既存の画像があれば表示 -->
       @if($product->image)
       <div>
-        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="max-width: 200px; margin-bottom: 10px;">
+        <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" style="max-width: 200px; margin-bottom: 10px;">
       </div>
       @endif
       <!-- 新しい画像のアップロード欄 -->

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Season;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -57,12 +58,16 @@ class ProductController extends Controller
 
 
   //商品登録された項目を保存するメソッド(POSTリクエスト: /products/register)
-  public function store(ProductRequest $request) //ProductRequestクラスでバリデーションを行う
+  public function store(ProductRequest $request)
   {
-    // バリデーションはProductRequestクラスで自動的に実行される
-    // 画像ファイルの保存（publicディスク上のproductsフォルダに保存）
-    // 返り値はファイルの相対パス（例: products/abc123.jpg）
-    $imagePath = $request->file('image')->store('products', 'public');
+    //ランダムでファイル名を生成（重複防止）
+    $filename = Str::random(20) . '.' . $request->file('image')->getClientOriginalExtension();
+
+    // 画像ファイルを/public/images/productsディレクトリに保存
+    $request->file('image')->move(public_path('images/products'), $filename);
+
+    // 画像のパスを保存用に設定
+    $imagePath = 'images/products/' . $filename;
 
     // 商品データをデータベースに保存
     $product = Product::create([
@@ -121,11 +126,8 @@ class ProductController extends Controller
 
 
   //商品を更新するメソッド(PUTリクエスト: /products/{productId}/update)
-  //ProductRequestクラスでバリデーションを行う
   public function update(ProductRequest $request, $productId)
   {
-    // バリデーションはProductRequestクラスで自動的に実行される
-
     // 指定IDの商品を取得（存在しない場合は404エラー）
     $product = Product::findOrFail($productId);
 
@@ -133,13 +135,19 @@ class ProductController extends Controller
     if ($request->hasFile('image')) {
       // 新しい画像がアップロードされた場合
 
-      // 古い画像があれば削除
-      if ($product->image) {
-        Storage::disk('public')->delete($product->image);
-      }
+      // ランダムでファイル名を生成（重複防止）
+      $filename = Str::random(20) . '.' . $request->file('image')->getClientOriginalExtension();
 
-      // 新しい画像を保存
-      $imagePath = $request->file('image')->store('products', 'public');
+      // 画像ファイルを/public/images/productsディレクトリに保存
+      $request->file('image')->move(public_path('images/products'), $filename);
+
+      // 画像のパスを更新用に設定
+      $imagePath = 'images/products/' . $filename;
+
+      // 古い画像があれば削除
+      if ($product->image && file_exists(public_path($product->image))) {
+        unlink(public_path($product->image));
+      }
     }
     else {
       // 新しい画像がアップロードされていない場合は既存の画像パスを使用
@@ -169,8 +177,8 @@ class ProductController extends Controller
     $product = Product::findOrFail($productId);
 
     // 商品に関連する画像ファイルを削除
-    if ($product->image) {
-      Storage::disk('public')->delete($product->image);
+    if ($product->image && file_exists(public_path($product->image))) {
+      unlink(public_path($product->image));
     }
 
     // 商品を削除（関連する中間テーブルのデータも自動的に削除される）
