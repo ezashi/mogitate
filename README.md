@@ -48,13 +48,11 @@ php artisan config:clear
 
 5. データベースのマイグレーションとシードを実行
 ```bash
-docker exec -it mogitate-php-1 bash
 php artisan migrate:fresh --seed
 ```
 
 6. ストレージのシンボリックリンクを作成（必要に応じて）
 ```bash
-docker exec -it mogitate-php-1 bash
 php artisan storage:link
 ```
 
