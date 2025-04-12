@@ -1,53 +1,37 @@
-# もぎたて - フルーツスムージー商品管理アプリケーション
-
-「もぎたて」は、フルーツスムージーショップの商品を管理するためのWebアプリケーションです。商品の登録、編集、検索、並び替え機能を提供し、季節ごとの商品分類も可能です。
-
+# もぎたて 商品管理アプリケーション
 ## 目次
-
 - [環境構築](#環境構築)
 - [使用技術（実行環境）](#使用技術実行環境)
 - [ER図](#er図)
 - [URL設計](#url設計)
 - [機能一覧](#機能一覧)
 
+
 ## 環境構築
 
-### 必要条件
-
-- Docker
-- Docker Compose
-- Git
-
-### インストール手順
-
-1. リポジトリをクローンします
-
+### Dockerビルド
+1. リポジトリをクローン
 ```bash
-git clone https://github.com/yourusername/mogitate.git
+git clone https://github.com/ezashi/mogitate.git
 cd mogitate
 ```
 
-2. Dockerコンテナをビルド・起動します
-
+2. Dockerコンテナをビルド・起動
 ```bash
 docker-compose up -d
 ```
 
-3. 依存パッケージをインストールします
-
+3. Laraveインストール
 ```bash
-docker-compose exec php composer install
+docker exec -it mogitate-php-1 bash
+composer install
 ```
 
-4. .envファイルを作成します
-
+4. .env.exampleファイルから.envを作成し、環境環境変数を変更
 ```bash
-cp src/.env.example src/.env
-docker-compose exec php php artisan key:generate
+cp .env.example .env
 ```
-
-5. 環境設定を編集します (.env)
-
+(.env)
 ```
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -56,41 +40,31 @@ DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
-
-6. データベースのマイグレーションとシードを実行します
-
-```bash
-docker-compose exec php php artisan migrate:fresh --seed
+(dockerコンテナ)
+```
+php artisan key:generate
+php artisan config:clear
 ```
 
-7. ストレージのシンボリックリンクを作成します（必要に応じて）
-
+5. データベースのマイグレーションとシードを実行
 ```bash
-docker-compose exec php php artisan storage:link
+docker exec -it mogitate-php-1 bash
+php artisan migrate:fresh --seed
 ```
 
-8. http://localhost にアクセスして、アプリケーションが正常に動作していることを確認します
+6. ストレージのシンボリックリンクを作成（必要に応じて）
+```bash
+docker exec -it mogitate-php-1 bash
+php artisan storage:link
+```
+
 
 ## 使用技術（実行環境）
 
-### フロントエンド
-- HTML / CSS
-- JavaScript
+- PHP 8.0
+- Laravel 10.0
+- MYSQL 8.0
 
-### バックエンド
-- PHP 7.4.9
-- Laravel 8.x
-
-### インフラ
-- Docker / Docker Compose
-- Nginx 1.21.1
-- MySQL 8.0.26
-- PHPMyAdmin
-
-### 開発環境
-- Docker環境で開発
-- MySQL用のデータボリューム
-- Nginxによるリバースプロキシ
 
 ## ER図
 
@@ -144,17 +118,17 @@ docker-compose exec php php artisan storage:link
 
 ## URL設計
 
-| HTTPメソッド | URL | コントローラー | 機能 |
+| HTTPメソッド | URL | 機能 |
 |---------|-----|-------------|-----|
-| GET | / | - | 商品一覧にリダイレクト |
-| GET | /products | ProductController@products | 商品一覧を表示 |
-| GET | /products/register | ProductController@create | 商品登録フォームを表示 |
-| POST | /products/register | ProductController@store | 商品を登録 |
-| GET | /products/search | ProductController@search | 商品を検索 |
-| GET | /products/{productId} | ProductController@show | 商品詳細を表示 |
-| GET | /products/{productId}/update | ProductController@edit | 商品編集フォームを表示 |
-| PUT | /products/{productId}/update | ProductController@update | 商品を更新 |
-| DELETE | /products/{productId}/delete | ProductController@destroy | 商品を削除 |
+| GET | / | 商品一覧にリダイレクト |
+| GET | /products | 商品一覧を表示 |
+| GET | /products/register | 商品登録フォームを表示 |
+| POST | /products/register | 商品を登録 |
+| GET | /products/search | 商品を検索 |
+| GET | /products/{productId} | 商品詳細を表示 |
+| GET | /products/{productId}/update | 商品編集フォームを表示 |
+| PUT | /products/{productId}/update | 商品を更新 |
+| DELETE | /products/{productId}/delete | 商品を削除 |
 
 ## 機能一覧
 
