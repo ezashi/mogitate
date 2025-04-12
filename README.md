@@ -119,7 +119,7 @@ php artisan storage:link
 ## URL設計
 
 | HTTPメソッド | URL | 機能 |
-|---------|-----|-------------|-----|
+|---------|-----|-----|
 | GET | / | 商品一覧にリダイレクト |
 | GET | /products | 商品一覧を表示 |
 | GET | /products/register | 商品登録フォームを表示 |
