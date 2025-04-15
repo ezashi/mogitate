@@ -164,14 +164,25 @@
             display: flex;
             justify-content: center;
         }
+        .pagination svg {
+        width: 20px;
+        height: 20px;
+        }
+        .pagination span.px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        }
+        .pagination a.px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        }
+        .pagination span.text-sm {
+        font-size: 0.875rem;
+        }
         .alert {
             padding: 15px;
             margin-bottom: 20px;
             border-radius: 4px;
-        }
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
         }
     </style>
 </head>
@@ -183,12 +194,6 @@
     </header>
 
     <div class="container">
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
         @yield('content')
     </div>
 </body>

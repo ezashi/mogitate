@@ -81,8 +81,8 @@ class ProductController extends Controller
     // $request->seasons は選択された季節IDの配列
     $product->seasons()->attach($request->seasons);
 
-    // 商品一覧ページにリダイレクトし、成功メッセージをフラッシュデータとして追加
-    return redirect('/products')->with('success', '商品を登録しました');
+    // 商品一覧ページにリダイレクト
+    return redirect('/products');
   }
 
 
@@ -165,8 +165,8 @@ class ProductController extends Controller
     // 中間テーブルの季節データを更新（既存のデータを一度削除して再登録）
     $product->seasons()->sync($request->seasons);
 
-    // 商品一覧ページにリダイレクトし、成功メッセージをフラッシュデータとして追加
-    return redirect('/products')->with('success', '商品を更新しました');
+    // 商品一覧ページにリダイレクト
+    return redirect('/products');
   }
 
 
@@ -184,7 +184,7 @@ class ProductController extends Controller
     // 商品を削除（関連する中間テーブルのデータも自動的に削除される）
     $product->delete();
 
-    // 商品一覧ページにリダイレクトし、成功メッセージをフラッシュデータとして追加
-    return redirect('/products')->with('success', '商品を削除しました');
+    // 商品一覧ページにリダイレクト
+    return redirect('/products');
   }
 }
